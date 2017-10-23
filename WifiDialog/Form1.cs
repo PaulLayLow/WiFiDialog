@@ -23,6 +23,7 @@ namespace WifiDialog
             InitializeComponent();
         }
 
+        // On Load, get all avialable WiFi within the vicinity
         private void WifiForm_Load(object sender, EventArgs e)
         {
             wifi = new Wifi();
@@ -41,6 +42,10 @@ namespace WifiDialog
                 {
                     lvap.SubItems.Add("\u221A");
                 }
+                else
+                {
+                    lvap.SubItems.Add("");
+                }
 
                 // Add name
                 lvap.Tag = ap;
@@ -48,8 +53,24 @@ namespace WifiDialog
                 lvAccessPoints.Items.Add(lvap);
             }
 
+            if (wifi.ConnectionStatus == WifiStatus.Connected)
+            {
+                lblConnStatus.Text = "ONLINE";
+                lblConnStatus.ForeColor = Color.Green;
+                btnDisconnect.Visible = true;
+                btnConnect.Visible = false;
+            }
+            else
+            {
+                lblConnStatus.Text = "OFFLINE";
+                lblConnStatus.ForeColor = Color.Red;
+                btnDisconnect.Visible = false;
+                btnConnect.Visible = true;
+            }
+
         }
 
+        // Disconnect current connection
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
             if (wifi.ConnectionStatus == WifiStatus.Connected)
@@ -57,21 +78,93 @@ namespace WifiDialog
                 wifi.Disconnect();
                 lblConnStatus.Text = "OFFLINE";
                 lblConnStatus.ForeColor = Color.Red;
-                MessageBox.Show("You have been disconnected.");
+                MessageBox.Show("You have been disconnected.", "Disconnected From WiFi");
             }
+            btnConnect.Visible = true;
+            btnDisconnect.Visible = false;
         }
 
+        // Refresh Access Points
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             lvAccessPoints.Items.Clear();
             WifiForm_Load(sender, e);
         }
 
+        // If user double-clicks on the list
         private void lvAccessPoints_Click(object sender, EventArgs e)
         {
-            Form2 passwordDlg = new Form2();
-            passwordDlg.f1 = this;
-            passwordDlg.Show();
+            // If connection is unsecured, just connect without asking for password
+            ListViewItem selectedItem = lvAccessPoints.SelectedItems[0];
+            if (selectedItem.SubItems[2].Text == "")
+            {
+                ListViewItem selectedAP = lvAccessPoints.SelectedItems[0];
+                AccessPoint ap = (AccessPoint)selectedAP.Tag;
+
+                if (connectToPublicWiFi(ap))
+                {
+                    lblConnStatus.Text = "ONLINE";
+                    lblConnStatus.ForeColor = Color.Green;
+                    btnDisconnect.Visible = true;
+                    btnConnect.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("Having difficulty connecting to " + ap.Name + " \nPlease check signal strength and try again.");
+                }
+            }
+            else
+            {
+                Form2 passwordDlg = new Form2();
+                passwordDlg.f1 = this;
+                passwordDlg.ShowDialog();
+            }
+        }
+
+        // Physical button to connect
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            // Make sure an access point is selected
+            if (lvAccessPoints.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("You must select an access point to connect to.");
+            }
+            else
+            {
+                // If connection is unsecured, just connect without asking for password
+                ListViewItem selectedItem = lvAccessPoints.SelectedItems[0];
+                if (selectedItem.SubItems[2].Text == "")
+                {
+                    ListViewItem selectedAP = lvAccessPoints.SelectedItems[0];
+                    AccessPoint ap = (AccessPoint)selectedAP.Tag;
+
+                    if (connectToPublicWiFi(ap))
+                    {
+                        lblConnStatus.Text = "ONLINE";
+                        lblConnStatus.ForeColor = Color.Green;
+                        btnDisconnect.Visible = true;
+                        btnConnect.Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Having difficulty connecting to " + ap.Name + " \nPlease check signal strength and try again.");
+                    }
+                }
+                else
+                {
+                    Form2 passwordDlg = new Form2();
+                    passwordDlg.f1 = this;
+                    passwordDlg.ShowDialog();
+                }
+            }
+        }
+
+        // Connect to WiFi
+        private bool connectToPublicWiFi(AccessPoint ap)
+        {
+            AuthRequest request = new AuthRequest(ap);
+            request.Password = "";
+            return ap.Connect(request);
         }
     }
 }

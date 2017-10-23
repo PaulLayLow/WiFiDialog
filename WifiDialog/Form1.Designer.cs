@@ -36,6 +36,7 @@
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.lblConnStatus = new System.Windows.Forms.Label();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvAccessPoints
@@ -49,11 +50,11 @@
             this.lvAccessPoints.Location = new System.Drawing.Point(9, 10);
             this.lvAccessPoints.Name = "lvAccessPoints";
             this.lvAccessPoints.Size = new System.Drawing.Size(336, 238);
-            this.lvAccessPoints.Sorting = System.Windows.Forms.SortOrder.Descending;
+            this.lvAccessPoints.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvAccessPoints.TabIndex = 0;
             this.lvAccessPoints.UseCompatibleStateImageBehavior = false;
             this.lvAccessPoints.View = System.Windows.Forms.View.Details;
-            this.lvAccessPoints.Click += new System.EventHandler(this.lvAccessPoints_Click);
+            this.lvAccessPoints.DoubleClick += new System.EventHandler(this.lvAccessPoints_Click);
             // 
             // clmAP
             // 
@@ -101,16 +102,30 @@
             this.lblConnStatus.TabIndex = 7;
             this.lblConnStatus.Text = "OFFLINE";
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(196, 254);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(149, 27);
+            this.btnConnect.TabIndex = 8;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Visible = false;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
             // WifiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(353, 287);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.lblConnStatus);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnDisconnect);
             this.Controls.Add(this.lvAccessPoints);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "WifiForm";
             this.Text = "Connect to WiFi";
             this.Load += new System.EventHandler(this.WifiForm_Load);
@@ -122,11 +137,12 @@
         #endregion
         private System.Windows.Forms.ColumnHeader clmAP;
         private System.Windows.Forms.ColumnHeader clmSignal;
-        private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.ColumnHeader clmSecure;
         private System.Windows.Forms.Button btnRefresh;
         public System.Windows.Forms.ListView lvAccessPoints;
         public System.Windows.Forms.Label lblConnStatus;
+        public System.Windows.Forms.Button btnDisconnect;
+        public System.Windows.Forms.Button btnConnect;
     }
 }
 
