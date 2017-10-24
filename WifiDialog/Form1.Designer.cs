@@ -37,6 +37,11 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.lblConnStatus = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.olvAPS = new BrightIdeasSoftware.ObjectListView();
+            this.olvAccessPoints = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvSignalStrength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvSecure = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            ((System.ComponentModel.ISupportInitialize)(this.olvAPS)).BeginInit();
             this.SuspendLayout();
             // 
             // lvAccessPoints
@@ -113,11 +118,44 @@
             this.btnConnect.Visible = false;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // olvAPS
+            // 
+            this.olvAPS.AllColumns.Add(this.olvAccessPoints);
+            this.olvAPS.AllColumns.Add(this.olvSignalStrength);
+            this.olvAPS.AllColumns.Add(this.olvSecure);
+            this.olvAPS.CellEditUseWholeCell = false;
+            this.olvAPS.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvAccessPoints,
+            this.olvSignalStrength,
+            this.olvSecure});
+            this.olvAPS.Cursor = System.Windows.Forms.Cursors.Default;
+            this.olvAPS.Location = new System.Drawing.Point(373, 15);
+            this.olvAPS.Name = "olvAPS";
+            this.olvAPS.Size = new System.Drawing.Size(322, 232);
+            this.olvAPS.TabIndex = 9;
+            this.olvAPS.UseCompatibleStateImageBehavior = false;
+            this.olvAPS.View = System.Windows.Forms.View.Details;
+            // 
+            // olvAccessPoints
+            // 
+            this.olvAccessPoints.Text = "Access Point";
+            this.olvAccessPoints.Width = 131;
+            // 
+            // olvSignalStrength
+            // 
+            this.olvSignalStrength.Text = "Signal Strength";
+            this.olvSignalStrength.Width = 106;
+            // 
+            // olvSecure
+            // 
+            this.olvSecure.Text = "Secure";
+            // 
             // WifiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(353, 287);
+            this.ClientSize = new System.Drawing.Size(709, 287);
+            this.Controls.Add(this.olvAPS);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.lblConnStatus);
             this.Controls.Add(this.btnRefresh);
@@ -129,6 +167,7 @@
             this.Name = "WifiForm";
             this.Text = "Connect to WiFi";
             this.Load += new System.EventHandler(this.WifiForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.olvAPS)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,6 +182,10 @@
         public System.Windows.Forms.Label lblConnStatus;
         public System.Windows.Forms.Button btnDisconnect;
         public System.Windows.Forms.Button btnConnect;
+        private BrightIdeasSoftware.ObjectListView olvAPS;
+        private BrightIdeasSoftware.OLVColumn olvAccessPoints;
+        private BrightIdeasSoftware.OLVColumn olvSignalStrength;
+        private BrightIdeasSoftware.OLVColumn olvSecure;
     }
 }
 
